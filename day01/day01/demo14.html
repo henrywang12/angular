@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>angularJS模块和双向绑定</title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        // step 1: 声明一个模块
+        var myapp = angular.module("myapp",[]);
+
+        // step 2: 向模块注册一个控制器
+        myapp.controller("myCtrl",function($scope){
+            // 绑定一个数组
+            $scope.numbers = [12,14,21,2,55,23,23];
+        });
+    </script>
+</head>
+<body ng-app="myapp" ng-controller="myCtrl">
+<ul>
+    <li ng-repeat="number in numbers track by $index">{{$index+1}}-{{number}}</li>
+</ul>
+</body>
+</html>

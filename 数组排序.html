@@ -1,0 +1,207 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+</body>
+</html>
+<script>
+
+//一些排序算法
+
+// js 利用sort进行排序
+function systemSort(arr) {
+    return arr.sort(function(a,b){return a-b});
+};
+
+//-------------------------------------------
+
+var arr=[85,22,54,5434,324,45,43,87,666];
+
+//我写的冒泡
+function myBubbleSort(arr){
+	var tmp;
+	for(var i=0; i<arr.length; i++){
+		for(var j=0; j<arr.length; j++){
+			if(arr[j]>arr[j+1]){
+				tmp=arr[j+1];
+				arr[j+1]=arr[j];
+				arr[j]=tmp;
+			};
+		};
+	}
+	console.log(arr);
+    console.log("-----------------------------");
+	return arr;
+};
+
+
+// 冒泡排序
+function bubbleSort(arr) {
+    var tmp;
+	var length = arr.length;
+    for (var i = 0; i <length; i++) {
+        for (var j = 0; j<length; j++) {
+            if (arr[i] < arr[j]) {
+                tmp=arr[j];
+                arr[j] = arr[i];
+                arr[i] = tmp;
+            }
+        }
+    }
+	console.log(arr);
+    console.log("-----------------------------");
+    return arr;
+};
+
+
+//反向冒泡
+function BubbleSort(arr) {
+  var length = arr.length;
+  for (var i = length - 1; i > 0; i--) { //用于缩小范围
+    for (var j = 0; j < i; j++) { //在范围内进行冒泡，在此范围内最大的一个将冒到最后面
+      if (arr[j] > arr[j+1]) { 
+        var temp = arr[j];
+        arr[j] = arr[j+1];
+        arr[j+1] = temp;
+      }
+    }
+    console.log(arr);
+    console.log("-----------------------------");
+  }
+  return arr;
+};
+
+
+//.选择排序
+function SelectionSort(arr) {
+  var length = arr.length;
+  for (var i = 0; i < length; i++) { //缩小选择的范围
+    var min = arr[i]; //假定范围内第一个为最小值
+    var index = i; //记录最小值的下标
+    for (var j = i + 1; j < length; j++) { //在范围内选取最小值
+      if (arr[j] < min) {
+        min = arr[j];
+        index = j;
+      }
+    }
+    if (index != i) { //把范围内最小值交换到范围内第一个
+      var temp = arr[i];
+      arr[i] = arr[index];
+      arr[index] = temp;
+    }
+    console.log(arr);
+    console.log("---------------------");
+  }
+  return arr;
+};
+
+
+// 快速排序
+function quickSort (arr) {
+    var i = 0;
+    var j = arr.length - 1;
+    var Sort = function(i, j) {
+
+        // 结束条件
+        if (i == j) {
+            return
+        };
+
+        var key = arr[i];
+        var stepi = i; // 记录开始位置
+        var stepj = j; // 记录结束位置
+        while (j > i) {
+            // j <<-------------- 向前查找
+            if (arr[j] >= key) {
+                j--;
+            } else {
+                arr[i] = arr[j]
+                //i++ ------------>>向后查找
+                while (j > ++i) {
+                    if (arr[i] > key) {
+                        arr[j] = arr[i];
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 如果第一个取出的 key 是最小的数
+        if (stepi == i) {
+            Sort(++i, stepj);
+            return;
+        }
+
+        // 最后一个空位留给 key
+        arr[i] = key;
+
+        // 递归
+        Sort(stepi, i);
+        Sort(j, stepj);
+    }
+    Sort(i, j);
+
+    return arr;
+};
+
+
+// 插入排序
+function InsertionSort(arr) {
+  var length = arr.length;
+  for (var i = 0; i < length - 1; i++) {
+    //i代表已经排序好的序列最后一项下标
+    var insert = arr[i+1];
+    var index = i + 1;//记录要被插入的下标
+    for (var j = i; j >= 0; j--) {
+      if (insert < arr[j]) {
+        //要插入的项比它小，往后移动
+        arr[j+1] = arr[j];
+        index = j;
+      }
+    }
+    arr[index] = insert;
+    console.log(arr);
+    console.log("-----------------------");
+  }
+  return arr;
+}
+
+
+function insertSort(arr) {
+    var j, step, key;
+    for (var i = 1; i < arr.length; i++) {
+        step = j = i;
+        key = arr[j];
+        while (--j > -1) {
+            if (arr[j] > key) {
+                arr[j + 1] = arr[j];
+            } else {
+                break;
+            }
+        }
+        arr[j + 1] = key;
+    }
+    return arr;
+};
+
+//----------------------------------------
+myBubbleSort(arr);
+
+bubbleSort(arr);
+
+BubbleSort(arr);
+
+SelectionSort(arr);
+
+quickSort (arr);
+
+InsertionSort(arr);
+
+insertSort(arr)
+
+
+</script>

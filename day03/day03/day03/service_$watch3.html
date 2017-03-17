@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>99元包邮</title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        var myapp = angular.module("myapp",[]);
+
+        // 注册一个控制器
+        myapp.controller("myCtrl",function($scope){
+            // 要显示的商品信息
+            $scope.products = [
+                {name:"商品A",price:9.85,quantity:5},
+                {name:"商品B",price:19.85,quantity:3},
+                {name:"商品C",price:29.85,quantity:1}
+            ];
+
+            // 定义账单对象
+            $scope.bill = {freight: 10.00};
+
+            // 计算应付金额
+            $scope.totalPayment = function(){
+                var total = 0;  // 总金额
+
+                angular.forEach($scope.products,function(product){
+                    total += product.price * product.quantity;
+                });
+
+                return total;
+            };
+
+            // 计算实付金额 = 应付金额 + 运费
+            $scope.actualPayment = function(){
+                return $scope.totalPayment() + $scope.bill.freight;
+            };
+
+            // 观察应付金额：如果应付金额>=99, 运费=0
+            $scope.$watch($scope.totalPayment,function(newValue,oldValue){
+                //$scope.bill.freight = (newValue>=99 ? 0.00 : 10.00);
+                if(newValue>=99){
+                    $scope.bill.freight=0.00;
+                }else{
+                    $scope.bill.freight=10.00;
+                }
+            });
+
+            // 检查(限制)商品数量值不允许为负值
+            $scope.check = function(product,index){
+                if(product.quantity < 0){
+                    $scope.products[index].quantity = 0;
+                }
+            };
+        });
+    </script>
+</head>
+<body ng-controller="myCtrl">
+<h1>全场99元包邮</h1>
+<div ng-repeat="product in products">
+    {{product.name}}
+    <input type="number" ng-model="product.quantity" ng-change="check(product,$index)"> ,
+    单价：{{product.price | currency:"￥"}},
+    小计：{{product.quantity * product.price | currency:"￥"}}
+</div>
+
+应付金额：{{totalPayment() | currency:"￥"}}<br/>
+运费：{{bill.freight | currency:"￥"}}<br/>
+实付金额：{{actualPayment() | currency:"￥"}}
+</body>
+</html>

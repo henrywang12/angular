@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>service_BOM对象</title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        var myapp = angular.module("myapp",[]);
+
+        // 注册一个控制器
+        // "依赖注入" - $window, $document, $location
+        myapp.controller("myCtrl",function($scope,$window,$document,$location){
+            $scope.winHeight = $window.innerHeight; // 获得窗口的高度
+            $scope.title = $document[0].title; // 获得网页的标题
+            $document[0].title = "hello angular!";  // 修改网页标题
+
+            // $localtion对象有几个方法，可以获得URL的相关信息
+            console.log("协议：" + $location.protocol());
+            console.log("主机：" + $location.host());
+            console.log("端口号：" + $location.port());
+            console.log("资源路径：" + $location.absUrl());
+
+//            $location.path("/aaaaaaaaaaaaaaa");
+            // 跳转
+//            $window.location.href = "http://www.163.com";
+        });
+    </script>
+</head>
+<body ng-controller="myCtrl">
+<p>窗口高度：{{winHeight}}</p>
+<p>网页标题：{{title}}</p>
+</body>
+</html>

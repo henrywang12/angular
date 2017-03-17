@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>service_window</title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        var myapp = angular.module("myapp",[]);
+
+        // 注册一个控制器
+        // "依赖注入" - $window
+        myapp.controller("myCtrl",function($scope,$window){
+            $scope.winHeight = $window.innerHeight;
+
+            // 获得原生的window对象
+            var w = angular.element($window);
+            // 再为w绑定窗口事件
+            w.on("resize",function(){
+                $scope.$apply(function(){
+                    $scope.winHeight = $window.innerHeight;
+                });
+            });
+        });
+    </script>
+</head>
+<body ng-controller="myCtrl">
+<p>窗口高度：{{winHeight}}</p>
+</body>
+</html>

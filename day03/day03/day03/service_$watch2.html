@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>service_$watch</title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        /*
+        $scope.$watch()方法：- angularJS应用的一个“观察者模式”
+         1) 这也是AngularJS能够实现双向数据绑定的“秘密”
+         2) 有的时候，我们需要自己来观察某些数据的变化，并做出相应的反应
+         */
+        var myapp = angular.module("myapp",[]);
+
+        // 注册一个控制器
+        myapp.controller("myCtrl",function($scope){
+            $scope.address = {
+                city:null
+            };
+            $scope.count = -1;
+
+            // 观察$scope.city的变化，相应地修改$scope.count的值
+            // $scope.$wathc()方法有两个参数：
+            //    - 第一个参数：是被观察的变量名/函数名
+            //    - 第二个参数：是一个函数，当被观察的对象发生变化时，这个函数会被调用
+            //    - 第三个参数：boolean。当为true时，比较的是对象的值，而不是内存地址
+            //  该方法第二个参数函数，还可带两个参数：变化后的值，变化前的值
+            $scope.$watch("address",function(){
+                $scope.count += 1;
+            },true);
+        });
+    </script>
+</head>
+<body ng-controller="myCtrl">
+<input type="text" ng-model="address.city"><br/>
+{{count}}
+</body>
+</html>

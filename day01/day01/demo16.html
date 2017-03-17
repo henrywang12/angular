@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>AngularJS自定义过滤器</title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        var myapp = angular.module("myapp",[]);
+        myapp.controller("myCtrl",function($scope){
+            $scope.message = "";
+        });
+
+        // 自定义过滤器
+        // 原始的数组 => [自定义过滤器] => 生成要显示的子数组
+        myapp.filter("myFilter",function(){
+            return function (content){
+                return content.replace(/枪/g,"***");
+            };
+        });
+
+        myapp.filter("myFilter2",function(){
+            return function (content,msg){
+                return content.replace(/枪/g,msg);
+            };
+        });
+    </script>
+</head>
+<body ng-controller="myCtrl">
+<p>
+    <input type="text" ng-model="message">
+</p>
+<p>{{message | myFilter}}</p>
+<p>{{message | myFilter2:"abc"}}</p>
+</body>
+</html>

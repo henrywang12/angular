@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>web站点入口页面</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/font-awesome.css"/>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script>
+        // 声明一个主模块，这个模块要依赖与路由模块
+        var myapp = angular.module("myapp",["ngRoute"]);
+
+        // 配置路由: $routeProvider对象负责路由映射
+        myapp.config(function($routeProvider){
+            $routeProvider.when("/",{
+                templateUrl:"pages/home.html",
+                controller:"homeController"
+            });
+            $routeProvider.when("/about",{
+                templateUrl:"pages/about.html",
+                controller:"aboutController"
+            });
+            $routeProvider.when("/contact",{
+                templateUrl:"pages/contact.html",
+                controller:"contactController"
+            });
+            $routeProvider.when("/contact/:subject",{
+                templateUrl:"pages/contact.html",
+                controller:"contactController"
+            });
+            $routeProvider.otherwise({
+                templateUrl:"pages/routeNotFound.html",
+                controller:"notFoundController"
+            });
+        });
+
+        myapp.controller("homeController",function($scope){
+            $scope.message = "这里是Home页面";
+        });
+
+        myapp.controller("aboutController",function($scope){
+            $scope.message = "这里是About页面";
+        });
+
+        // 提取路由参数，需要依赖注入一个 $routeParams service
+        // 参数的提交格式：$routeParams = {subject:a}或{subject:b}
+        myapp.controller("contactController",function($scope,$routeParams){
+            $scope.message = "这里是Contact页面";
+
+            // 获得参数名subject对应的参数值
+            var subject = $routeParams["subject"];
+
+            if(subject == "a"){
+                $scope.title = "请告诉我们";
+            }else if(subject == "b"){
+                $scope.title = "询价";
+            }
+        });
+
+        myapp.controller("notFoundController",function($scope,$location){
+            $scope.message = "这里是Not Found页面";
+            $scope.errorPath = $location.path();       // 获得url中的路径部分(#之后的内容)
+        });
+
+        // 注册一个控制器
+        myapp.controller("indexController",function($scope){
+            $scope.hello = "Hello Angular.";
+        });
+    </script>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-default">
+
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#/">我的站点</a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/"><i class="fa fa-home"></i> 主页</a></li>
+                <li><a href="#about"><i class="fa fa-shield"></i> 关于我们</a></li>
+                <li><a href="#contact"><i class="fa fa-comment"></i> 联系我们</a></li>
+            </ul>
+        </div>
+
+    </nav>
+</header>
+
+<div id="main" ng-controller="indexController">
+    <!--在这里切换子页面-->
+    <div ng-view></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>AngularJS的表单元素双向绑定</title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        // 声明一个模块
+        var myapp = angular.module("myapp",[]);
+
+        // 注册一个控制器
+        myapp.controller("myCtrl",function($scope){
+//            $scope.selectedCity = "成都"; // 默认值
+            $scope.cities = [
+                {code:"010",name:"北京"},
+                {code:"020",name:"上海"},
+                {code:"030",name:"深圳"},
+                {code:"040",name:"成都"},
+                {code:"050",name:"杭州"}
+            ];
+        });
+    </script>
+</head>
+<body ng-controller="myCtrl">
+<select ng-model="selectedCity" ng-options="city.code as city.name for city in cities">
+    <option value="">-请选择城市-</option>
+</select>
+{{selectedCity}}
+</body>
+</html>

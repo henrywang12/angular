@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>AngularJS的表单元素双向绑定</title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        // 声明一个模块
+        var myapp = angular.module("myapp",[]);
+        // 注册一个控制器
+        myapp.controller("myCtrl",function($scope){
+            $scope.gender = "男生";     // 给定一个默认值
+            $scope.agree = true;        // 给定一个默认值
+        });
+    </script>
+</head>
+<body ng-controller="myCtrl">
+<div><input type="text" ng-model="city"><p>{{city}}</p></div>
+<div>
+    <input type="radio" name="gender" value="男生" ng-model="gender">男
+    <input type="radio" name="gender" value="女生" ng-model="gender">女
+    <p>性别是：{{gender}}</p>
+</div>
+<div>
+    <input type="checkbox" ng-model="agree">同意此协议
+    <p>
+        <p ng-show="agree">同意</p>
+        <p ng-show="!agree">不同意</p>
+    </p>
+</div>
+</body>
+</html>

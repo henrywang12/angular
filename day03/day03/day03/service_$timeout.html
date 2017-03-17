@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>service_$timeout</title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        var myapp = angular.module("myapp",[]);
+
+        // "依赖注入" $timeout service
+        myapp.controller("myCtrl",function($scope,$timeout){
+            $scope.count = 0;
+            $timeout(function(){
+                $scope.count = 10;
+            },3000);
+        });
+    </script>
+</head>
+<body ng-controller="myCtrl">
+{{count}}
+</body>
+</html>

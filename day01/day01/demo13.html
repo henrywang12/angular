@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>angularJS模块和双向绑定</title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        // step 1: 声明一个模块
+        var myapp = angular.module("myapp",[]);
+
+        // step 2: 向模块注册一个控制器
+        myapp.controller("myCtrl",function($scope){
+            // 绑定一个对象
+            $scope.person = {
+                name:"张三",
+                gender:"男"
+            };
+        });
+    </script>
+</head>
+<body ng-app="myapp" ng-controller="myCtrl">
+{{person.name}} - {{person.gender}}
+</body>
+</html>

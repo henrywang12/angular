@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="js/angular.min.js"></script>
+    <script>
+        /*
+            1、基本布局
+            2、准备模拟数据
+            3、将数据显示在view视图中
+            4、只显示待办事项 - 使用过滤器
+            5、动态显示待办事项的数量 - 定义统计函数
+            6、根据待办事项的数量动态改变样式 - 使用ngClass指令
+            7、自定义过滤器，控制显示待办事项(是否全部显示) - 开关功能
+            8、响应“添加”按钮事件，动态添加新的待办事项。
+         */
+        // 模拟数据
+        var data = {
+            user:"李四",
+            items:[
+                {todo:"约刘诗诗吃饭",done:false},
+                {todo:"约刘诗诗看电影",done:true},
+                {todo:"约刘诗诗跳舞",done:false},
+                {todo:"约刘诗诗爬长城",done:false},
+                {todo:"约刘诗诗逛天坛",done:false},
+                {todo:"帮刘诗诗修电脑",done:true},
+                {todo:"约刘诗诗敲代码",done:false}
+            ]
+        };
+
+        // 声明一个主模块
+        var myapp = angular.module("myapp",[]);
+
+        // 注册一个控制器
+        myapp.controller("todoCtrl",function($scope){
+            $scope.todos = data;
+
+            // 动态统计待办事项数量的函数
+            $scope.todoCount = function(){
+                var count = 0;
+                // 遍历所有items，统计done:false项的数量
+                // angularJS不建议使用jquery，它本身已经实现了jquery的一个子集:jqlite
+                // 很多jquery的方法，可以通过jqlite来调用
+                angular.forEach($scope.todos.items,function(item){
+                    if(!item.done){
+                        count++;
+                    }
+                });
+                return count;
+            };
+
+            // 动态获得样式css类
+            $scope.lableClass = function(){
+//                if($scope.todoCount() > 3){
+//                    return "label-warning";
+//                }else{
+//                    return "label-success";
+//                }
+                return $scope.todoCount() > 3 ? "label-warning" : "label-success";
+            };
+
+            // 添加新的待办事项
+            $scope.addItem = function(){
+                // 非空验证: ....交给你们了
+
+                var item = {
+                    todo:$scope.action,
+                    done:false
+                };
+
+                $scope.todos.items.push(item);  // 将新的事项放入到数组中
+
+                // 清空输入框
+                $scope.action = null;
+            }
+        });
+
+        // 注册一个过滤器
+        myapp.filter("showFilter",function(){
+            return function (items,showComplete){
+                var showArr = [];
+
+                // 遍历items，根据item.done的值以及showComplete的值，决定是否显示
+                angular.forEach(items,function(item){
+//                    if(!item.done || showComplete){
+//                        showArr.push(item);
+//                    }
+                    if(item.done == false){
+                        // 如果是未办的事儿，一定要显示的
+                        showArr.push(item);
+                    }else{
+                        // 虽然是办完的事儿，显示不显示，看showComplete的值
+                        if(showComplete == true){
+                            // 如果用户勾选了复选框，要求显示所有的事儿
+                            showArr.push(item); // 即使办完的事儿，也显示
+                        }
+                    }
+                });
+
+                return showArr;
+            };
+        });
+    </script>
+</head>
+<body ng-controller="todoCtrl">
+<div class="container">
+    <div class="page-header">
+        <h1>
+            {{todos.user}}的记事本
+            <span class="label label-info"
+                  ng-class="lableClass()"
+                  ng-hide="todoCount() == 0">
+                {{todoCount()}}
+            </span>
+        </h1>
+    </div>
+
+    <div class="panel">
+        <div id="todoPanel" class="input-group">
+            <!--隐式绑定：$scope.action -->
+            <input class="form-control" ng-model="action"/>
+            <span class="input-group-btn">
+                <button class="btn btn-default" ng-click="addItem()">添加</button>
+            </span>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th><th>事项</th><th>完成情况</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--<tr ng-repeat="item in todos.items | filter:{done:false}">-->
+            <tr ng-repeat="item in todos.items | showFilter:showComplete">
+                <td>{{$index + 1}}</td>
+                <td>{{item.todo}}</td>
+                <td><input type="checkbox" ng-model="item.done"/></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="checkbox-inline">
+            <!--使用隐式绑定：绑定到$scope.showComplete = true/false -->
+            <label><input type="checkbox" ng-model="showComplete">显示已完成事项</label>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

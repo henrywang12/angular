@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <meta charset="UTF-8">
+    <title>AngularJS指令</title>
+    <script src="js/angular.min.js"></script>
+</head>
+<body>
+<div ng-init="count=1" ng-click="count=count+1">
+    {{count}}
+</div>
+<div>
+    <input type="button"
+           ng-init="flag=false"
+           ng-disabled="flag"
+           ng-click="flag=!flag" value="Click Me">
+</div>
+</body>
+</html>

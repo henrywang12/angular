@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        /**
+         *
+         * 购物车参数实现：
+         * 操作的数据 - 商品
+         *  var product01 = {
+           name: “JS高级编程”,
+           price: 8.00
+    };
+
+         var item01 = {
+          product: product01,
+          number: 5
+    };
+
+         对商品进行哪些操作：添加商品到购物车、修改购物车中某个指定商品的数量、从购物车中删除指定商品、查看购物车、清空购物车、...
+         *
+         *
+         */
+// 声明一个数组 - 相当于购物车中的购物筐
+        var cart = [];
+
+        // 声明一个购物车对象
+        var shopCart = {
+            // 添加商品到购物车
+            add:function(product){
+                // 当添加商品时，先看看购物车中有没有该商品
+                var flag = false;
+                for(var index=0;index<cart.length;index++){
+                    if(cart[index].product.name == product.name){
+                        flag = true;
+                        // 这时说明购物车中原来已经有了该商品，我们要做的是将该商品的数量+1
+                        cart[index].number += 1;
+                        break;
+                    }
+                }
+
+                // 如果购物车中原来没有该商品
+                if(!flag){
+                    var item = {product:product, number:1}; // 构造一个item项
+                    cart.push(item);        // 将该item放入购物车
+                }
+            },
+            // 修改购物车中某个指定商品的数量
+            update:function(){
+
+            },
+            // 从购物车中删除指定商品
+            remove:function(name){
+                for(var index=0;index<cart.length;index++){
+                    if(cart[index].product.name == name){
+                        // 说明找到了要删除的商品
+                        cart.splice(index,1);
+                        break;
+                    }
+                }
+            },
+            // 查看购物车
+            findAll:function(){
+                return cart;
+            },
+            // 清空购物车
+            clear:function(){
+                cart.length = 0;
+            }
+        };
+
+        // 模拟一个购物过程
+        console.log("走，逛超市去....");
+
+        console.log("咦！看见一瓶啤酒！！买!!!");
+        var product01 = {name:"青岛啤酒",price: 8.00};
+        shopCart.add(product01);
+
+        console.log("想一想，一瓶不够喝。再拿一瓶");
+        var product02 = {name:"青岛啤酒",price: 8.00};
+        shopCart.add(product02);
+
+        console.log("继续逛超市去....");
+        console.log("咦！看见一包花生米！！买!!!");
+        var product03 = {name:"花生米",price: 2.00};
+        shopCart.add(product03);
+
+        console.log("看看现在购物车中都有啥:");
+        var allProducts = shopCart.findAll();
+        console.log("allProducts.length:" + allProducts.length);
+        //for(var item in allProducts){ // 注：对于数组，不可以使用 for-in语句
+        for(var i=0;i<allProducts.length;i++){
+            var item = allProducts[i];
+            console.log(item.product.name + "," + item.product.price + "," + item.number);
+        }
+
+        console.log("喝酒但不多喝，不要酒了");
+        shopCart.remove("青岛啤酒");
+
+        console.log("\n再看看现在购物车中都有啥:");
+        allProducts = shopCart.findAll();
+        for(var i=0;i<allProducts.length;i++){
+            item = allProducts[i];
+            console.log(item.product.name + "," + item.product.price + "," + item.number);
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

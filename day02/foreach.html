@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>AngularJs</title>
+    <style>
+        body {
+            font: 16px/30px "微软雅黑"
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        tr, th, td {
+            border: 1px solid #ccc;
+            padding: 10px 15px;
+            text-align: center;
+        }
+
+        th {
+            background: #ff666b;
+            color: #fff;
+        }
+
+        .price {
+            color: #FF6600;
+            font-weight: bold;
+            font: 20px/30px "微软雅黑"
+        }
+    </style>
+    <script src="js/angular.min.js"></script>
+    <script>
+        var myapp = angular.module("myApp", []);
+        myapp.controller("myCtrl", function ($scope, $filter) {
+            $scope.products = [
+                {name: "小米", price: 1999, os: "android", day: new Date(), number: 2},
+                {name: "华为", price: 2999, os: "android", day: new Date(), number: 3},
+                {name: "三星", price: 3999, os: "android", day: new Date(), number: 5},
+                {name: "苹果", price: 4999, os: "ios", day: new Date(), number: 6}
+            ];
+            $scope.totalPrice = 0;
+
+            //forEach 是ECMAScript 5
+            /*
+
+             数组.forEach(function(数组项, 数组下标, 数组){
+             });
+
+             */
+            $scope.products.forEach(function (product) {
+                $scope.totalPrice += product.price * product.number;
+            });
+
+            var tmpProducts = (function () {
+                $scope.totalPrice = 0;
+                return $filter('myFilter')($scope.products, 1000, 3000);
+            })();
+
+            tmpProducts.forEach(function (product) {
+                $scope.totalPrice += product.price * product.number;
+            });
+
+        });
+
+        myapp.filter("myFilter", function () {
+            return function (products, min, max) {
+                var tmpProducts = [];
+                products.forEach(function (product) {
+                    if (product.price >= min && product.price <= max) {
+                        tmpProducts.push(product);
+                    }
+                });
+                return tmpProducts;
+            }
+        });
+
+    </script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+<table>
+    <thead>
+    <tr>
+        <th>编号</th>
+        <th>商品名称</th>
+        <th>商品价格</th>
+        <th>商品数量</th>
+        <th>操作系统</th>
+        <th>生产日期</th>
+        <th>商品小计</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="product in products | myFilter:1000:3000">
+        <td>{{$index+1}}</td>
+        <td>{{product.name}}</td>
+        <td class="price">{{product.price | currency:"￥"}}</td>
+        <td class="price">{{product.number}}</td>
+        <td>{{product.os | uppercase}}</td>
+        <td>{{product.day | date:"yyyy年MM月dd日"}}</td>
+        <td class="price">{{product.price * product.number | currency:"￥"}}</td>
+    </tr>
+    <tr>
+        <td colspan="7">所有商品总价: <span class="price">{{totalPrice | currency:"￥"}}</span></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>AngularJS的表单元素双向绑定 - 实现级联菜单</title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        // 声明一个模块
+        var myapp = angular.module("myapp",[]);
+
+        // 注册一个控制器
+        myapp.controller("myCtrl",function($scope){
+            $scope.cities = [
+                {code:"010",name:"北京",areas:["海淀区","东城区","西城区"]},
+                {code:"020",name:"上海",areas:["浦东新区","静安区","黄浦区"]}
+            ];
+        });
+    </script>
+</head>
+<body ng-controller="myCtrl">
+<select ng-model="selectedCity" ng-options="city.name for city in cities">
+    <option value="">-请选择城市-</option>
+</select>
+<select ng-model="selectedArea" ng-options="area for area in selectedCity.areas">
+    <option value="">-请选择区县-</option>
+</select>
+<br/>
+{{selectedCity}},{{selectedArea}}
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>service_interval</title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        var myapp = angular.module("myapp",[]);
+
+        // "依赖注入" $interval service
+        myapp.controller("myCtrl",function($scope){
+            $scope.count = 0;
+            setInterval(function(){
+                // $scope对象有一个方法，叫$apply，可以强制更新
+                $scope.$apply(function(){
+                    $scope.count += 1;
+                });
+            },1000);
+        });
+    </script>
+</head>
+<body ng-controller="myCtrl">
+{{count}}
+</body>
+</html>

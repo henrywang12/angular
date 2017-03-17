@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>AngularJS模块</title>
+    <script src="js/angular.min.js"></script>
+    <script>
+        // step 1: 声明一个模块
+        // module()函数的第一个参数，是模块的名称；第二个参数，是一个依赖模块的数组列表；
+        var myapp = angular.module("myapp",[]);
+
+        // step 2: 在模块中声明一个控制器
+        // 支持使用方法链
+        myapp.controller("myCtrl",function($scope,$rootScope){
+            $scope.name = "张三";
+            $rootScope.gender = "女";
+        }).controller("myCtrl2",function($scope){
+            $scope.name = "李四";
+        });
+    </script>
+</head>
+<body>
+<div ng-controller="myCtrl">
+    {{name}},{{gender}}
+</div>
+<div ng-controller="myCtrl2">
+    {{name}},{{gender}}
+</div>
+</body>
+</html>
